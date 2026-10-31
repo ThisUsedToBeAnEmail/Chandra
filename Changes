@@ -1,0 +1,218 @@
+Revision history for Chandra
+
+0.30 2026-07-25
+  - Chandra::App: document on_tick - a per-frame callback for games and
+    animations that switches run() to a non-blocking event loop
+  - Chandra::App: document on_close (window-close handler, e.g. for flushing
+    save state on exit) and on_reload (hot-reload callback).
+
+0.29 2026-07-08
+  - xs/shortcut.xs: fix keyboard shortcuts broken by double injection after document.open().
+
+0.27 2026-07-07
+  - chandra_internal.h CHANDRA_ROUTER_JS: fix navigation links broken by double injection.
+
+0.26 2026-07-07
+  - chandra_canvas.h _canvas_nv_str: replace Gconvert with SvPV.
+
+0.25 2026-05-17
+  - Fix MANIFEST
+
+0.24 2026-04-19
+  - Add Chandra::Component - Object::Proto reactive component system
+  - Components support state, lifecycle hooks (on_mount, on_unmount, on_update)
+  - data-action attribute auto-binds to on_* methods via JS bridge
+  - Child composition with automatic mount/unmount propagation
+  - Selective DOM re-rendering via $app->update on component subtree
+  - Parameterised actions (data-action="method:arg1:arg2")
+  - Fix HTML attribute escaping for onclick handlers (&quot; encoding)
+  - Add Chandra::Table - sortable, filterable, paginated data grid component
+  - Table supports client-side and server-side sorting
+  - Column filtering with text search and dropdown options
+  - Pagination with page size and navigation controls
+  - Row selection (single/multi) with checkboxes
+  - Boolean column type with checkmark display
+  - CSV export via to_csv()
+  - Dynamic data updates via set_data()
+  - Table renders using Chandra::Element for proper event wiring
+  - Partial DOM updates for Table (filters don't lose focus on sort/page/filter)
+  - Input debounce (300ms) for text filter fields
+  - Component update_part() for targeted sub-section re-rendering
+  - Add Chandra::Theme - CSS theme system with light/dark modes
+  - CSS custom properties for all design tokens (--chandra-*)
+  - Auto mode via prefers-color-scheme media query
+  - Component styles for Form, Table, buttons, inputs, scrollbars
+  - $app->theme('dark') convenience method (XS)
+  - Add Chandra::Toast - in-app toast notifications
+  - Toast types: success, error, warning, info with colour-coded accents
+  - Auto-dismiss with configurable duration (0 = persistent)
+  - Optional action button with Perl callback
+  - Stacking with max 5 visible, slide-in/out animation
+  - Click to dismiss, X button
+  - $app->toast() and $app->dismiss_toast() convenience methods (XS)
+  - Themed via CSS custom properties
+  - Add Chandra::Modal - custom HTML modal dialogs (XS)
+  - Modal show/close with backdrop, title bar, X button
+  - Confirm convenience (OK/Cancel with callbacks)
+  - Prompt convenience (text input with on_submit receiving value)
+  - Custom button definitions with class and action/handler
+  - Scale-in/out animation, auto-focus input fields
+  - Add Chandra::Form::Validator - form validation framework
+  - Built-in validators: required, pattern, minlength, maxlength, min, max, email
+  - Custom validator callbacks (Perl coderef, receives value + all data)
+  - Custom error messages per rule (required_msg, pattern_msg, etc.)
+  - Client-side validation JS with submit prevention and live blur validation
+  - Server-side validate() returns errors hashref
+  - Integrates with existing show_errors_js/clear_errors_js
+  - Add Chandra::Nav - sidebar/topbar navigation component
+  - Active item highlighting, route integration, badges, separators
+  - Collapsible sidebar with toggle button
+  - Add Chandra::Tabs - tab switching component
+  - Tab content rendered on switch, badge support, on_change callback
+  - Add Chandra::Breadcrumb - breadcrumb trail component
+  - Clickable path items with route navigation, configurable separator
+  - All three use Chandra::Element and extend Chandra::Component
+  - Page reload recovery via WKUserScript + on_reload callback
+  - Bridge JS re-injection on reload (window.chandra restored)
+  - $app->on_reload(sub { ... }) for re-mounting components after reload
+  - Fix Linux notification shell escaping (single quotes properly escaped)
+  - Bridge extension circular dependency detection with extension names in error
+  - Canvas batch rendering wrapped in requestAnimationFrame for vsync
+  - Windows Pack: Authenticode signing via signtool (sign_cert/sign_password)
+  - Windows notifications: Shell_NotifyIcon balloon tips (replaces MessageBox)
+
+0.23 2026-04-16
+  - Fix t/47_clipboard.t test for empty string on FreeBSD/headless systems
+  - Empty clipboard behavior is now platform-tolerant (undef or empty allowed)
+  - Fix t/63_pack.t path separator comparison on Windows
+  - Fix t/26_socket.t plan mismatch on Windows (use done_testing instead of fixed plan)
+  - Skip Unix socket Hub/Client tests on Windows
+  - Adds Chandra::Canvas
+
+0.22 2026-04-11
+  - make manifest to include edge header
+
+0.21 2026-04-11
+  - Add Edge/WebView2 backend for Windows (Chromium-based rendering)
+  - Automatic fallback to MSHTML when WebView2 Runtime unavailable
+  - Document WebView2 requirements in POD
+  - Deduplicate bridge JavaScript into shared header (chandra_bridge_js.h)
+
+0.20 2026-04-09
+  - Update deps - bump min version of File::Raw to 0.08 to get file_join
+  - Make tests environment agnostic
+
+0.19 2026-04-08
+   - Add Chandra::Pack - Bundle Chandra apps into distributable packages
+
+0.18 2026-04-08
+   - Add Chandra::Bridge::Extension - register custom JS modules on window.chandra
+   - Add App->extend_bridge() convenience method
+   - Fix clipboard test on FreeBSD: tolerate undef from get_text after set_text('')
+
+0.17 2026-04-07
+   - Add Chandra::Form - HTML Form helpers with two-way binding for Chandra applications
+   - Auto-detect any installed webkit2gtk version via pkg-config
+   - Fix splash test skip on headless Linux (probe with Window not Splash)
+
+0.16 2026-04-07
+   - Fix Win32 builds: gettimeofday/localtime_r/flock/urandom portability
+   - Fix headless Linux test failures to satisfy cpantesters
+
+0.15 2026-04-06
+   - Add Chandra::Splash - For splash screen / loading state
+   - Add Chandra::Log - For structured logging framework
+   - Add Chandra::Socket::Token - For token management with rotation and expiry
+   - More test fixes for Strawberry Perl
+   - Makefile fix for darwin intel arch
+
+0.14 2026-04-06
+   - Add Chandra::ContextMenu - Context menus for Chandra applications
+   - A few more fixes to try and get Strawberry to build
+
+0.13  2026-04-05
+    - Add Chandra::Window - Multi-window management
+    - Add Chandra::Assets - Asset bundling and resource loading for Chandra apps
+    - Add Chandra::Clipboard - System clipboard access (text, HTML, images)
+    - Add Chandra::DragDrop - File drops, text drops, intra-app drag and drop
+    - Auto-detect headless environments in Makefile.PL for CPAN Testers
+    - Fix Windows/Strawberry Perl builds (MULTIPLICITY-safe Win32 APIs)
+
+0.12  2026-04-04
+    - Add Chandra::Store - Persistent key-value storage for Chandra apps
+
+0.10  2026-04-02
+    - Add Chandra::Shortcut - keyboard shortcuts and global hotkeys
+
+0.09  2026-04-01
+    - Fix Makefile to identify BSD's that should use GTK/WebKit2
+
+0.08  2026-04-01
+    - Fix removing unnecessary call_method overhead when calling internal XSUBS.
+    - Adds Native OS desktop notifications
+
+0.07  2026-03-31
+    - Port code to XS (all methods now in C)
+    - Add global css and js chain methods to Chandra::App
+    - Extend routes with a way to assign custom css and js per route
+
+0.06  2026-03-30
+    - Add system tray integration and example
+    - Another attempt at fixing windows to run
+    - Start porting code into XS, using the INCLUDE technique
+
+0.05  2026-03-29
+    - Fix Errno portability: use POSIX qw(EAGAIN EWOULDBLOCK) instead of Errno
+    - Fix Bind.pm dispatch crash on non-hashref JSON (e.g. numeric/string payloads)
+    - Fix Connection.pm missing Errno import for Perl 5.10 compatibility
+    - Remove unused Errno import from Hub.pm
+    - Comprehensive POD documentation for all 14 modules
+    - Added SEE ALSO cross-references across all modules
+    - Windows: add webview-win32.c MSHTML backend (OLE WebBrowser embedding)
+    - Windows: fix MULTIPLICITY build - undef Perl calloc/free macros for webview.h
+    - Chandra::Tray - system tray icon with context menu (macOS/GTK/Win32)
+    - Tray: add_item, add_separator, add_submenu, set_icon, set_tooltip
+    - Tray: on_click handler, update_item, show/remove lifecycle
+    - App: tray() lazy accessor for Chandra::Tray integration
+
+0.04  2026-03-29
+    - Chandra::Socket::Hub - IPC server with Unix domain socket and TCP transport
+    - Chandra::Socket::Client - IPC client with auto-reconnect and request/response
+    - Chandra::Socket::Connection - length-prefixed JSON wire protocol
+    - App: hub(), client() methods with integrated poll loop
+    - Channel-based message routing, broadcast, send_to
+    - on_connect/on_disconnect lifecycle hooks
+    - Security: token-based handshake authentication
+    - Security: socket path in $XDG_RUNTIME_DIR with 0600 permissions
+    - Security: token file (0600) written alongside socket for client auth
+    - Security: max frame size (16 MB) and buffer overflow protection (64 MB)
+    - Security: malformed JSON frame warnings
+    - Security: duplicate client name collision handling
+    - TCP transport: opt-in TLS via IO::Socket::SSL (tls_cert, tls_key, tls)
+    - Examples: socket_ipc_example.pl, chat_hub.pl, chat_window.pl
+
+0.03  2026-03-29
+    - Switch from JSON to Cpanel::JSON::XS
+    - Add Cpanel::JSON::XS to PREREQ_PM
+    - Bail out of Makefile.PL on Linux when GTK/WebKit2 dev libraries are missing
+
+0.02  2026-03-28
+    - Chandra::App - high-level OO application wrapper
+    - Chandra::Element - Moonshine-compatible DOM builder with render()
+    - Event handler compilation (onclick subs → JS wiring)
+    - Handler registry with unique IDs
+    - Chandra::Bind - function registry + JSON dispatch
+    - Chandra::Bridge - JS bridge auto-injection
+    - Chandra::Event - event object with accessors
+    - Promise-based return values (js_resolve + dispatch_eval_js)
+    - set_content, update, alert convenience methods
+    - Examples: bind_example, counter_app, element_example
+    - Comprehensive test suite (303 tests)
+
+0.01  2026-03-28
+    - Initial prototype
+    - Basic webview_run() support
+    - Event loop control (init/loop/exit)
+    - JavaScript evaluation
+    - JS -> Perl callback via external.invoke()
+    - macOS (Cocoa/WebKit), Linux (GTK/WebKit2), Windows (MSHTML) support
